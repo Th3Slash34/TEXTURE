@@ -225,7 +225,6 @@ generate();
 
 function generateSVGContent(data) {
   const fillMode = document.getElementById('fillMode').value;
-  const lineColor = fillMode === 'empty' ? 'black' : 'white';
   const w = data.cols * (data.squareSize + data.spacing);
   const h = data.rows * (data.squareSize + data.spacing);
   const lineW = Math.max(0.5, data.squareSize / 40);
@@ -256,7 +255,7 @@ function generateSVGContent(data) {
       const spread = (i - (conn.multiplicity - 1) / 2) * lineGap * 2;
       const cx = mx + nx * spread;
       const cy = my + ny * spread;
-      svg += '<path d="M' + conn.x1 + ',' + conn.y1 + ' Q' + cx + ',' + cy + ' ' + conn.x2 + ',' + conn.y2 + '" fill="none" stroke="' + lineColor + '" stroke-width="' + lineW + '"/>\n';
+      svg += '<path d="M' + conn.x1 + ',' + conn.y1 + ' Q' + cx + ',' + cy + ' ' + conn.x2 + ',' + conn.y2 + '" fill="none" stroke="black" stroke-width="' + lineW + '"/>\n';
     }
   }
 
