@@ -228,7 +228,7 @@ function generateSVGContent(data) {
   const w = data.cols * (data.squareSize + data.spacing);
   const h = data.rows * (data.squareSize + data.spacing);
   const lineW = Math.max(0.5, data.squareSize / 40);
-  const lineGap = data.squareSize / 20;
+  const lineGap = data.squareSize / 8;
   let svg = '<svg id="preview" xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">\n';
 
   for (let r = 0; r < data.rows; r++) {
@@ -244,14 +244,18 @@ function generateSVGContent(data) {
   }
 
   for (const conn of data.connections) {
+    const mx = (conn.x1 + conn.x2) / 2;
+    const my = (conn.y1 + conn.y2) / 2;
     const dx = conn.x2 - conn.x1;
     const dy = conn.y2 - conn.y1;
     const len = Math.sqrt(dx * dx + dy * dy);
     const nx = len > 0 ? -dy / len : 0;
     const ny = len > 0 ? dx / len : 0;
     for (let i = 0; i < conn.multiplicity; i++) {
-      const offset = (i - (conn.multiplicity - 1) / 2) * lineGap;
-      svg += '<line x1="' + (conn.x1 + nx * offset) + '" y1="' + (conn.y1 + ny * offset) + '" x2="' + (conn.x2 + nx * offset) + '" y2="' + (conn.y2 + ny * offset) + '" stroke="black" stroke-width="' + lineW + '"/>\n';
+      const spread = (i - (conn.multiplicity - 1) / 2) * lineGap * 2;
+      const cx = mx + nx * spread;
+      const cy = my + ny * spread;
+      svg += '<path d="M' + conn.x1 + ',' + conn.y1 + ' Q' + cx + ',' + cy + ' ' + conn.x2 + ',' + conn.y2 + '" fill="none" stroke="black" stroke-width="' + lineW + '"/>\n';
     }
   }
 
